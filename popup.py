@@ -34,7 +34,7 @@ def scroller():
 
 		            prev_y = x
 	    cv2.imshow('frame', frame)
-	    if cv2.waitKey(10) == ord('q'):
+	    if cv2.waitKey(1) == ord('q'):
 	        break
 
 	cap.release()
@@ -52,7 +52,7 @@ def aircanvas():
 	    print("")
 
 	bpoints = [deque(maxlen=1024)]
-	gpoints = [deque(maxlen=1024)]
+	gpoints = [deque(maxlen=1024)]     
 	rpoints = [deque(maxlen=1024)]
 	blpoints = [deque(maxlen=1024)]
 
@@ -215,10 +215,10 @@ def aircanvas():
 	                cv2.line(img, points[i][j][k - 1], points[i][j][k], colors[i], 2)
 	                cv2.line(paintWin, points[i][j][k - 1], points[i][j][k], colors[i], 2)
 
-	    cv2.imshow("Air Canvas",img)
+	    cv2.imshow("Draw In",img)
 	    cv2.imshow("Mask",mask)
 	    cv2.imshow("Paint", paintWin)
-	    if cv2.waitKey(50) & 0xFF == ord('q'):
+	    if cv2.waitKey(1) & 0xFF == ord('q'):
 	        break
 
 	cap.release()
@@ -238,8 +238,11 @@ def sharing():
 	yellow_upper = np.array([45, 255, 255])
 	prev_x = 0
 	prev_y = 0
+	username = pymsgbox.prompt('Enter  destination system username and ipaddress Ex:- username@127.0.0.1')
+	password = pymsgbox.password('Enter  destination system password', mask='*')
+	path = pymsgbox.prompt('Enter  destination system path')
 
-	while True:
+	while True:	
 	    ret, frame = cap.read()
 	    ret, frame2 = cap.read()
 	    colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (0, 0, 0)]
@@ -262,17 +265,19 @@ def sharing():
 		            	# date = pyautogui.press('ctrl','c')
 		            	pyautogui.hotkey('ctrl', 'c')
 		            	date = pyperclip.paste()
-		            	date=date[7:]
-		            	cmd = "scp -r navaneeswarreddy@192.168.225.34:{0} /home/navaneeswarreddy/Music/".format(date)
+		            	#date=date[6:]
+		            	
+		            	cmd = "sshpass -p '{2}' scp -r {0} {1}:{3} ".format(date,username,password,path)
+		            	print(cmd)
 		            	img = cv2.rectangle(frame, (52,1) , (600,65) , colors[1] , -1)
-		            	cv2.putText(img, cmd ,(57,40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+		            	# cv2.putText(img, cmd ,(57,40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
 		            	os.system(cmd)
 		            	
 		            	    
 
 		            prev_y = x
 	    cv2.imshow('frame', frame)
-	    if cv2.waitKey(10) == ord('q'):
+	    if cv2.waitKey(1) == ord('q'):
 	        break
 
 	cap.release()
@@ -292,12 +297,12 @@ def index():
 		cv2.putText(img, "VISION ASSISSTANT"  ,(175,40), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2 , cv2.LINE_AA)
 		cv2.putText(img, "1. SCROLLER"  ,(75,105), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 1 )
 		cv2.putText(img, "2. FILE SHARING"  ,(75,175), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 1 )
-		cv2.putText(img, "3. AIR CANVAS"  ,(75,245), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 1 )
+		cv2.putText(img, "3. DRAW IN"  ,(75,245), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 1 )
 		cv2.putText(img, " Chose the Option ? Then, Click Q to enter "  ,(60,300), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0 , 255), 2 )
 		cv2.putText(img, " Want to Exit ? Then, Click E to exit "  ,(95,350), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0 , 255), 2 )
 		
 
-		if cv2.waitKey(10) == ord('q'):
+		if cv2.waitKey(1) == ord('q'):
 			response = pymsgbox.prompt('Enter  your Option ')
 			cap.release()
 			cv2.destroyAllWindows()
@@ -314,7 +319,7 @@ def index():
 			else:
 				pymsgbox.alert('Chose the correct Option', 'Title')
 				index()
-		elif cv2.waitKey(10) == ord('e'):
+		elif cv2.waitKey(1) == ord('e'):
 			break
 
 
